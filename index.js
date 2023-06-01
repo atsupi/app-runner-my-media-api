@@ -9,7 +9,7 @@ import AWS from 'aws-sdk';
 import cors from 'cors';
 
 const app = express();
-const port = 3001;
+const port = 8080;
 app.use(express.json());
 app.use(cors());
 
@@ -49,11 +49,12 @@ app.post("/media", async (req, res) => {
         result: "201 OK",
         param: req.body,
     }
+    const s3_backet_name = getS3BacketName();
     console.log("s3FileDownload", req.body.key, path.join(__dirname, "tmp2.mov"));
-    console.log(process.env.S3_BUCKET_NAME);
+    console.log(s3_backet_name);
     try {
         const uploaded_data = await s3.getObject({
-            Bucket: process.env.S3_BUCKET_NAME,
+            Bucket: s3_backet_name,
             Key: req.body.key
         }).promise()
             .catch((err) => console.log(err));

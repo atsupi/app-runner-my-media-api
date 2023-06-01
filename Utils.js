@@ -107,3 +107,7 @@ export function invokeFFmpegCommand(inFile, outFile) {
         console.log(err);
     }
 }
+
+export function getS3BacketName () {
+    return secret3;
+}

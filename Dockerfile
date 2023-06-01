@@ -12,6 +12,6 @@ COPY ./index.js ./
 cOPY ./Utils.js ./
 COPY ./.env ./
 
-EXPOSE 3001
+EXPOSE 8080
 
 CMD ["node", "index.js"];
