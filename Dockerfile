@@ -9,7 +9,7 @@ COPY package*.json ./
 RUN npm install
 
 COPY ./index.js ./
-cOPY ./Utils.js ./
+COPY ./Utils.js ./
 COPY ./.env ./
 
 EXPOSE 8080
