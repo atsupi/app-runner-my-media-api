@@ -19,39 +19,41 @@ const client = new SecretsManagerClient({
     region: "ap-northeast-1",
 });
 
-let response1;
-let response2;
-let response3;
+let value1;
+let value2;
+let value3;
 
 try {
-    response1 = await client.send(
+    const response1 = await client.send(
         new GetSecretValueCommand({
             SecretId: secret_name1,
             VersionStage: "AWSCURRENT", // VersionStage defaults to AWSCURRENT if unspecified
         })
     );
-    response2 = await client.send(
+    value1 = JSON.parse(response1.SecretString);
+    const response2 = await client.send(
         new GetSecretValueCommand({
             SecretId: secret_name2,
             VersionStage: "AWSCURRENT", // VersionStage defaults to AWSCURRENT if unspecified
         })
     );
-    response3 = await client.send(
+    value2 = JSON.parse(response2.SecretString);
+    const response3 = await client.send(
         new GetSecretValueCommand({
             SecretId: secret_name3,
             VersionStage: "AWSCURRENT", // VersionStage defaults to AWSCURRENT if unspecified
         })
     );
+    value3 = JSON.parse(response3.SecretString);
 } catch (error) {
     // For a list of exceptions thrown, see
     // https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
     throw error;
 }
 
-const secret1 = response1.SecretString;
-const secret2 = response2.SecretString;
-const secret3 = response3.SecretString;
-
+const secret1 = value1["ACCESS_KEY"];
+const secret2 = value2["SECRET_ACCESS_KEY"];
+const secret3 = value3["S3_BUCKET_NAME"];
 
 AWS.config.update({
     credentials: new AWS.Credentials(
@@ -65,9 +67,6 @@ const s3 = new AWS.S3();
 
 export async function s3FileDownload(key, localfile) {
     console.log("s3FileDownload", key, path.join(__dirname, localfile));
-    console.log(secret1);
-    console.log(secret2);
-    console.log(secret3);
     try {
         const uploaded_data = await s3.getObject({
             Bucket: secret3,
@@ -84,6 +83,7 @@ export async function s3FileDownload(key, localfile) {
 }
 
 export async function s3FileUpload(key, localfile) {
+    console.log("s3FileUpload", key, path.join(__dirname, localfile));
     try {
         await s3.putObject({
             Bucket: secret3,
@@ -106,6 +106,14 @@ export function invokeFFmpegCommand(inFile, outFile) {
     } catch (err) {
         console.log(err);
     }
+}
+
+export function getAccessKey () {
+    return secret1;
+}
+
+export function getSecretAccessKey () {
+    return secret2;
 }
 
 export function getS3BacketName () {

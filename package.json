@@ -21,6 +21,7 @@
   "dependencies": {
     "@aws-sdk/client-secrets-manager": "^3.342.0",
     "aws-sdk": "^2.1373.0",
+    "body-parser": "^1.20.2",
     "child_process": "^1.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",

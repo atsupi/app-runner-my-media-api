@@ -10,7 +10,6 @@ RUN npm install
 
 COPY ./index.js ./
 COPY ./Utils.js ./
-COPY ./.env ./
 
 EXPOSE 8080
 
